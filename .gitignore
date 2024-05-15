@@ -1,0 +1,8 @@
+aws-node-http-api-project-soon-lesson
+
+# package directories
+node_modules
+jspm_packages
+
+# Serverless directories
+.serverless

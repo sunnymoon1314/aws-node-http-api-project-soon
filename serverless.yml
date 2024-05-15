@@ -1,0 +1,40 @@
+service: aws-node-http-api-project-soon
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  deploymentBucket:
+    name: cohort5.deployment
+
+functions:
+  firstfunction:
+    handler: index.firsthandler
+    events:
+      - httpApi:
+          path: /getpath
+          method: get
+      - sqs:
+          arn: arn:aws:sqs:us-east-1:255945442255:soon-sqs
+  
+  secondfunction:
+    handler: index.secondhandler
+    events:
+      - httpApi:
+          path: /postpath
+          method: post
+      - sqs:
+          arn:
+            Fn::GetAtt:
+              - SoonQueue
+              - Arn
+
+resources:
+  Resources:
+    SoonQueue:
+      Type: "AWS::SQS::Queue"
+      Properties:
+        QueueName: "soon-sqs"
+
+plugins:
+  - serverless-offline
